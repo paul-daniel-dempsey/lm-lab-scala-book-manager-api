@@ -6,6 +6,7 @@ import play.api.mvc._
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
+ * Ext2 : From  Routes, OK Action Onto views folder, html file and index page?
  */
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
