@@ -22,6 +22,14 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
     Ok(Json.toJson(bookToReturn))
   }
 
+  def deleteBook(bookId: Long): Action[AnyContent] = Action {
+    var bookToReturn: Book = null
+    dataRepository.deleteBook(bookId) foreach { book =>
+      bookToReturn = book
+    }
+    Ok(Json.toJson(dataRepository.deleteBook(bookId)))
+  }
+
   def addBook() : Action[AnyContent] = Action {
     implicit request => {
       val requestBody = request.body
@@ -35,9 +43,6 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
         )
 
       val savedBook: Option[Book] = dataRepository.addBook(bookItem.get)
-      Created(Json.toJson(savedBook))
-    }
-
-
+      Created(Json.toJson(savedBook)) }
   }
 }

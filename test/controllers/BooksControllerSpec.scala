@@ -15,7 +15,7 @@ import scala.collection.mutable
 class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar {
 
   val mockDataService: BookRepository = mock[BookRepository]
-  var sampleBook: Option[Book] = Option(Book(2,
+  var sampleBook: Option[Book] = Option(Book(3,
     "Fantastic Mr. Fox",
     "Roald Dahl",
     "Brilliant",
@@ -71,14 +71,28 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
 
       // Here we utilise Mockito for stubbing the request to addBook
       when(mockDataService.addBook(any())) thenReturn sampleBook
-
-
       val controller = new BooksController(stubControllerComponents(), mockDataService)
       val book = controller.addBook().apply(
         FakeRequest(POST, "/books").withJsonBody(Json.toJson(sampleBook)))
 
       status(book) mustBe CREATED
       contentType(book) mustBe Some("application/json")
+    }
+  }
+
+  "BooksController DELETE bookById" should {
+
+    "return 200 OK for single book delete" in {
+
+      // Here we utilise Mockito for stubbing the request to getBook
+      when(mockDataService.deleteBook(2)) thenReturn mutable.Set[Book]()
+
+      val controller = new BooksController(stubControllerComponents(), mockDataService)
+      val allBooks = controller.deleteBook(2).apply(FakeRequest(DELETE, "/books/2"))
+
+      status(allBooks) mustBe OK
+      contentType(allBooks) mustBe Some("application/json")
+      contentAsString(allBooks) mustEqual "[]"
     }
   }
 }

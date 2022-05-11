@@ -15,6 +15,12 @@ class BookRepository {
     "Scala programming language",
     "Development"
   )
+  bookList += Book(2,
+    "Programming in Scala2, Fifth Edition",
+    "Martin Odersky2",
+    "Scala programming language2",
+    "Development2"
+  )
 
   def getAllBooks: mutable.Set[Book] = bookList
 
@@ -25,6 +31,10 @@ class BookRepository {
    */
   def getBook(bookId: Long): Option[Book] = bookList.collectFirst {
     case book if book.id == bookId => book
+  }
+
+  def deleteBook(bookId: Long): mutable.Set[Book] = {
+    bookList --= bookList.filter(elem => elem.id == bookId)
   }
 
   def addBook(book: Book): Option[Book] = {
