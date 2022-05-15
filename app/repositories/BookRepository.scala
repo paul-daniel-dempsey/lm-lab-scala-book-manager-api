@@ -33,7 +33,11 @@ class BookRepository {
     case book if book.id == bookId => book
   }
 
+  @throws(classOf[Exception])
   def deleteBook(bookId: Long): mutable.Set[Book] = {
+    if(!bookList.exists(_.id == bookId)) {
+      throw new Exception("Book not found")
+    }
     bookList --= bookList.filter(elem => elem.id == bookId)
   }
 

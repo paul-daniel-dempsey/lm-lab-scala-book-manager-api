@@ -94,5 +94,17 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
       contentType(allBooks) mustBe Some("application/json")
       contentAsString(allBooks) mustEqual "[]"
     }
+
+    "throw an error when deleting a book that doesn't exist" in {
+
+      when(mockDataService.deleteBook(80)) thenThrow new Exception("Book not found")
+
+      val controller = new BooksController(stubControllerComponents(), mockDataService)
+      val exceptionCaught = intercept[Exception] {
+        controller.deleteBook(80).apply(FakeRequest(DELETE, "/books/80"))
+      }
+
+      exceptionCaught.getMessage mustBe "Book not found"
+    }
   }
 }
