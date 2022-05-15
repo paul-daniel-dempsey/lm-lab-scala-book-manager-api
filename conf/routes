@@ -5,12 +5,31 @@
 
 # An example controller showing a sample home page
 # Ext2 : Routes into index function of home controller
+### NoDocs ###
 GET     /                           controllers.HomeController.index()
 
 # Map static resources from the /public folder to the /assets URL path
+### NoDocs ###
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+### NoDocs ###
+GET   /docs/swagger-ui/*file        controllers.Assets.at(path:String="/public/lib/swagger-ui", file:String)
+
+### NoDocs ###
+GET   /assets/*file                 controllers.Assets.versioned(path="/public", file: Asset)
+
 
 GET     /books                      controllers.BooksController.getAll()
 POST    /books                      controllers.BooksController.addBook()
+
+###
+#  summary: Get a single book by ID
+#  responses:
+#    200:
+#      description: success
+#      schema:
+#        $ref: '#/components/schemas/models.Book'
+###
 GET     /books/:bookId              controllers.BooksController.getBook(bookId: Long)
+
 DELETE  /books/:bookId              controllers.BooksController.deleteBook(bookId: Long)
